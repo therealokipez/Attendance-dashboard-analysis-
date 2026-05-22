@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AttendiQ — Smart Attendance</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- HUB -->
+<div class="screen on" id="s-hub">
+  <div class="hub-bg"><div class="hub-mesh"></div><div class="hub-grid"></div></div>
+  <div class="hub-inner">
+    <div class="aq-logo"><div class="aq-mark"><span></span><span></span><span></span><span></span></div><div class="aq-wordmark">Attendi<em>Q</em></div></div>
+    <div class="hub-eyebrow"><span class="hub-pulse"></span>Smart Attendance Platform</div>
+    <div class="hub-h">Who are you today?</div>
+    <div class="hub-sub">Choose your role to access your dedicated portal with personalised tools and insights.</div>
+    <div class="rgrid">
+      <div class="rc s" onclick="goLogin('student')"><div class="rc-shine"></div><div class="rc-border"></div><div class="rc-icon">🎓</div><div class="rc-tag">Student</div><div class="rc-name">Student Portal</div><div class="rc-desc">Scan QR codes, track attendance, view grades and get alerts</div><div class="rc-cta">Sign in <span>→</span></div></div>
+      <div class="rc l" onclick="goLogin('lecturer')"><div class="rc-shine"></div><div class="rc-border"></div><div class="rc-icon">🧑‍🏫</div><div class="rc-tag">Lecturer</div><div class="rc-name">Lecturer Portal</div><div class="rc-desc">Create sessions, generate QR codes for students to scan</div><div class="rc-cta">Sign in <span>→</span></div></div>
+      <div class="rc a" onclick="goLogin('advisor')"><div class="rc-shine"></div><div class="rc-border"></div><div class="rc-icon">📋</div><div class="rc-tag">Advisor</div><div class="rc-name">Advisor Portal</div><div class="rc-desc">Monitor advisees, log interventions and track progress</div><div class="rc-cta">Sign in <span>→</span></div></div>
+      <div class="rc d" onclick="goLogin('admin')"><div class="rc-shine"></div><div class="rc-border"></div><div class="rc-icon">🏛</div><div class="rc-tag">Admin</div><div class="rc-name">Admin Portal</div><div class="rc-desc">Department-wide analytics, reports and account management</div><div class="rc-cta">Sign in <span>→</span></div></div>
+      <div class="rc p" onclick="goLogin('provost')"><div class="rc-shine"></div><div class="rc-border"></div><div class="rc-icon">🎖️</div><div class="rc-tag">Provost</div><div class="rc-name">Provost Portal</div><div class="rc-desc">University-wide oversight, strategic reports and full control</div><div class="rc-cta">Sign in <span>→</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="screen" id="s-login">
+  <div class="lp-vis" id="lvis">
+    <div class="lp-vbg" id="lvisBg"></div>
+    <div class="lp-noise"></div>
+    <div class="lp-pat" id="lvisPat"></div>
+    <div id="lvisFloats"></div>
+    <div class="lp-content" id="lvisContent"></div>
+  </div>
+  <div class="lp-fp" id="lfp">
+    <div class="fb" id="fbox"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="s-dash">
+  <div class="dtop">
+    <div class="dt-left">
+      <div class="hbg" id="hbg" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+      <div class="topbar-logo"><div class="aq-mark" style="width:22px;height:22px"><span></span><span></span><span></span><span></span></div><div class="topbar-wordmark">Attendi<em>Q</em></div></div>
+    </div>
+    <div style="flex:1"></div>
+    <div class="dt-right">
+      <div class="icon-btn" onclick="toast('🔔 3 alerts — Marcus Clive flagged at-risk')">🔔<div class="notif-dot"></div></div>
+      <div class="tb-sep"></div>
+      <div style="display:flex;align-items:center;gap:9px">
+        <div class="user-av" id="topAv" style="background:var(--blue)">AJ</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--t1);letter-spacing:-.02em" id="umName">Alex Johnson</div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em" id="umRole">Student</div>
+        </div>
+      </div>
+      <div class="tb-sep"></div>
+      <button class="tb-logout" onclick="signOut()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log Out
+      </button>
+    </div>
+  </div>
+  <div class="dbody">
+    <div class="dside" id="dside">
+      <div class="ds-sect" id="sideNav"></div>
+      <div class="ds-bot">
+        <div class="ds-user">
+          <div class="av" style="width:30px;height:30px" id="sbAv">AJ</div>
+          <div><div class="dsu-name" id="sbName">Alex Johnson</div><div class="dsu-role" id="sbRole">Student</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="main" id="mainArea"></div>
+  </div>
+</div>
+
+<!-- SCANNER -->
+<div class="scan-ov" id="scanOv">
+  <div class="scan-x" onclick="closeScan()">✕</div>
+  <div style="text-align:center"><div class="livepill" style="margin-bottom:12px"><div class="ldot"></div>LIVE CAMERA</div><div style="font-size:13px;color:var(--t3)">Point camera at your lecturer's QR code</div></div>
+  <div class="scan-frame"><div class="scan-inner"><div class="scan-c tl"></div><div class="scan-c tr"></div><div class="scan-c bl"></div><div class="scan-c br"></div><div style="font-size:44px;opacity:.12">⬛</div><div style="font-size:11px;color:var(--t4)">Align QR within frame</div></div><div class="scan-line"></div></div>
+  <div style="text-align:center"><div style="font-size:16px;font-weight:900;letter-spacing:-.03em;color:var(--t1)">Mark Attendance</div><div style="font-size:12px;color:var(--t3);margin-top:4px">Scan the QR code generated by your lecturer</div></div>
+  <div style="display:flex;gap:10px"><button class="btn ghost" onclick="closeScan()">Cancel</button><button class="btn pri" onclick="simulateScan()">⚡ Simulate Scan</button></div>
+</div>
+
+<!-- SUCCESS -->
+<div class="succ-ov" id="succOv">
+  <div class="succ-ring" id="succRing"></div>
+  <div style="font-size:22px;font-weight:900;letter-spacing:-.04em;color:var(--t1)" id="succTitle">Attendance Recorded</div>
+  <div style="font-size:13px;color:var(--t3)" id="succSub">Your presence has been logged.</div>
+  <div class="card" style="min-width:300px;max-width:380px;width:100%"><div id="succBody"></div></div>
+  <button class="btn pri" onclick="closeSucc()">Return to Dashboard</button>
+</div>
+
+<!-- MODAL -->
+<div class="mod-ov" id="modOv" onclick="closeMod(event)">
+  <div class="modal" id="modBody"></div>
+</div>
+
+<div id="toast"></div>
+
+
+<div id="toast"></div>
+
+<script src="qr.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script src="views.js"></script>
+</body>
+</html>
